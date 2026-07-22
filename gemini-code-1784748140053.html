@@ -1,0 +1,643 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Apne (अपने) | Premium South Asian Skincare</title>
+    
+    <!-- Typography -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+
+    <style>
+        /* --- DESIGN TOKENS & VARIABLES --- */
+        :root {
+            --cream: #FAF6F0;
+            --espresso: #1C1814;
+            --gold: #B8924A;
+            --amber-light: rgba(184, 146, 74, 0.1);
+            --border-faint: rgba(28, 24, 20, 0.15);
+            
+            --font-serif: 'Cormorant Garamond', serif;
+            --font-sans: 'DM Sans', sans-serif;
+            
+            --spacing-xs: 0.5rem;
+            --spacing-sm: 1rem;
+            --spacing-md: 2rem;
+            --spacing-lg: 4rem;
+            --spacing-xl: 8rem;
+        }
+
+        /* --- GLOBAL RESETS & BASE --- */
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body {
+            background-color: var(--cream);
+            color: var(--espresso);
+            font-family: var(--font-sans);
+            font-weight: 300;
+            line-height: 1.6;
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        h1, h2, h3, h4 {
+            font-family: var(--font-serif);
+            font-weight: 400;
+            line-height: 1.2;
+        }
+
+        a { color: inherit; text-decoration: none; cursor: pointer; }
+        button { cursor: pointer; font-family: var(--font-sans); }
+        ul { list-style: none; }
+
+        .devanagari-accent {
+            font-family: var(--font-sans);
+            color: var(--gold);
+            font-size: 0.85rem;
+            letter-spacing: 0.1em;
+            opacity: 0.8;
+        }
+
+        .small-caps {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.15em;
+            font-weight: 500;
+        }
+
+        /* --- LAYOUT UTILITIES --- */
+        .container {
+            width: 100%;
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 var(--spacing-sm);
+        }
+        @media (min-width: 768px) { .container { padding: 0 var(--spacing-lg); } }
+
+        /* --- ANIMATIONS --- */
+        .reveal {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 1s cubic-bezier(0.25, 0.46, 0.45, 0.94), 
+                        transform 1s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        }
+        .reveal.active { opacity: 1; transform: translateY(0); }
+
+        /* --- HEADER & NAVIGATION --- */
+        header {
+            position: fixed;
+            top: 0; left: 0; right: 0;
+            background: rgba(250, 246, 240, 0.95);
+            backdrop-filter: blur(10px);
+            z-index: 100;
+            border-bottom: 1px solid var(--border-faint);
+            height: 70px;
+            display: flex;
+            align-items: center;
+        }
+
+        .nav-inner {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 100%;
+        }
+
+        .nav-links { display: none; gap: var(--spacing-md); }
+        @media (min-width: 768px) { .nav-links { display: flex; } }
+
+        .logo {
+            font-family: var(--font-serif);
+            font-size: 1.8rem;
+            letter-spacing: 0.05em;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            line-height: 1;
+        }
+        
+        .logo-sub { font-size: 0.6rem; letter-spacing: 0.2em; color: var(--gold); }
+
+        .nav-actions { display: flex; align-items: center; gap: var(--spacing-sm); }
+        .lang-toggle { font-size: 0.75rem; letter-spacing: 0.1em; }
+        .cart-toggle { position: relative; }
+        .cart-count {
+            position: absolute;
+            top: -8px; right: -12px;
+            background: var(--gold); color: var(--cream);
+            font-size: 0.65rem;
+            width: 16px; height: 16px;
+            display: flex; align-items: center; justify-content: center;
+            border-radius: 50%;
+        }
+
+        /* --- BUTTONS --- */
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 1rem 2rem;
+            background: var(--espresso);
+            color: var(--cream);
+            text-transform: uppercase;
+            letter-spacing: 0.15em;
+            font-size: 0.75rem;
+            border: 1px solid var(--espresso);
+            transition: all 0.3s ease;
+            width: 100%;
+        }
+        @media (min-width: 768px) { .btn { width: auto; } }
+        .btn:hover { background: var(--cream); color: var(--espresso); }
+        .btn-outline { background: transparent; color: var(--espresso); border-color: var(--border-faint); }
+        .btn-outline:hover { border-color: var(--espresso); }
+
+        /* --- VIEWS --- */
+        .view { display: none; padding-top: 70px; }
+        .view.active { display: block; }
+
+        /* --- HOME PAGE COMPOSITION --- */
+        /* 1. Hero */
+        .hero {
+            min-height: 85vh;
+            display: flex;
+            align-items: center;
+            text-align: center;
+            position: relative;
+            padding: var(--spacing-lg) 0;
+        }
+        .hero-img {
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            object-fit: cover; z-index: -1; opacity: 0.6;
+        }
+        .hero-content { max-width: 600px; margin: 0 auto; }
+        .hero h1 { font-size: clamp(3rem, 8vw, 5rem); margin-bottom: var(--spacing-sm); }
+        .hero p { font-size: 1.1rem; margin-bottom: var(--spacing-md); }
+
+        /* 2. Value Strip */
+        .value-strip {
+            border-top: 1px solid var(--border-faint);
+            border-bottom: 1px solid var(--border-faint);
+            padding: var(--spacing-md) 0;
+            display: flex; flex-direction: column; gap: var(--spacing-sm);
+            text-align: center;
+        }
+        @media (min-width: 768px) {
+            .value-strip { flex-direction: row; justify-content: space-around; }
+        }
+
+        /* 3. Shop Section (Jharokha Motif Usage) */
+        .shop-section { padding: var(--spacing-xl) 0; text-align: center; }
+        .section-header { margin-bottom: var(--spacing-lg); }
+        
+        .product-grid {
+            display: grid; gap: var(--spacing-md);
+            grid-template-columns: 1fr;
+        }
+        @media (min-width: 768px) { .product-grid { grid-template-columns: repeat(2, 1fr); gap: var(--spacing-lg); } }
+
+        .product-card {
+            text-align: left;
+            position: relative;
+            padding: var(--spacing-sm);
+        }
+        /* Minimalist Modern Jharokha Arch Framing */
+        .product-card-img-wrapper {
+            position: relative;
+            padding-top: 120%;
+            margin-bottom: var(--spacing-sm);
+            border: 1px solid var(--amber-light);
+            /* Cusped arch abstraction using clip-path for modern premium feel */
+            clip-path: polygon(0 15%, 15% 0, 85% 0, 100% 15%, 100% 100%, 0 100%);
+            background: #eee; /* Placeholder for amber glass imagery */
+            overflow: hidden;
+            cursor: pointer;
+        }
+        .product-card-img-wrapper::after {
+            content: ''; position: absolute; top: 10px; left: 10px; right: 10px; bottom: 10px;
+            border: 1px solid var(--gold); opacity: 0.3;
+            clip-path: polygon(0 12%, 12% 0, 88% 0, 100% 12%, 100% 100%, 0 100%);
+        }
+        
+        .product-meta { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 0.25rem;}
+        .price { font-family: var(--font-serif); font-size: 1.2rem; }
+
+        /* 4. Cultural Story */
+        .cultural-story {
+            background: var(--espresso); color: var(--cream);
+            padding: var(--spacing-xl) 0;
+        }
+        .story-grid {
+            display: grid; gap: var(--spacing-lg);
+            align-items: center;
+        }
+        @media (min-width: 768px) { .story-grid { grid-template-columns: 1fr 1fr; } }
+        .story-content h2 { color: var(--gold); margin-bottom: var(--spacing-sm); font-size: 3rem; }
+        .story-image {
+            aspect-ratio: 4/5; background: #332d26;
+            border: 1px solid var(--gold);
+            border-top-left-radius: 50vw; border-top-right-radius: 50vw; /* Classic arch */
+        }
+        @media (min-width: 768px) {
+            .story-image { border-top-left-radius: 20vw; border-top-right-radius: 20vw; }
+        }
+
+        /* --- PRODUCT DETAIL PAGE (PDP) --- */
+        .pdp-grid {
+            display: grid; grid-template-columns: 1fr; gap: var(--spacing-md);
+            padding: var(--spacing-lg) 0;
+        }
+        @media (min-width: 900px) {
+            .pdp-grid { grid-template-columns: 1.2fr 1fr; gap: var(--spacing-xl); }
+        }
+        
+        /* Mobile scroll snap gallery */
+        .pdp-gallery {
+            display: flex; overflow-x: auto; scroll-snap-type: x mandatory; gap: var(--spacing-xs);
+            scrollbar-width: none;
+        }
+        .pdp-gallery::-webkit-scrollbar { display: none; }
+        .pdp-gallery-item {
+            flex: 0 0 90%; scroll-snap-align: center; aspect-ratio: 4/5;
+            background: #eae4db; border-radius: 2px;
+        }
+        @media (min-width: 900px) {
+            .pdp-gallery { display: grid; grid-template-columns: 1fr 1fr; flex-wrap: wrap; gap: var(--spacing-sm); }
+            .pdp-gallery-item { flex: auto; width: 100%; }
+            .pdp-gallery-item:first-child { grid-column: 1 / -1; }
+        }
+
+        .pdp-info {
+            position: sticky; top: 100px; height: fit-content;
+        }
+        .pdp-header { border-bottom: 1px solid var(--border-faint); padding-bottom: var(--spacing-sm); margin-bottom: var(--spacing-sm); }
+        .pdp-header h1 { font-size: 2.5rem; margin: 0.5rem 0; }
+        
+        .commerce-controls { margin: var(--spacing-md) 0; display: flex; flex-direction: column; gap: var(--spacing-sm); }
+        
+        /* Bundle Option */
+        .bundle-box {
+            border: 1px solid var(--border-faint); padding: var(--spacing-sm);
+            display: flex; align-items: center; justify-content: space-between;
+            cursor: pointer; transition: border-color 0.3s;
+        }
+        .bundle-box:hover, .bundle-box.selected { border-color: var(--gold); }
+        
+        /* Expandable Accordions (Ingredients/How to use) */
+        details {
+            border-bottom: 1px solid var(--border-faint);
+            padding: var(--spacing-sm) 0;
+        }
+        summary {
+            font-family: var(--font-sans); text-transform: uppercase; letter-spacing: 0.1em;
+            font-size: 0.8rem; cursor: pointer; list-style: none;
+            display: flex; justify-content: space-between; font-weight: 500;
+        }
+        summary::-webkit-details-marker { display: none; }
+        summary::after { content: '+'; font-size: 1rem; color: var(--gold); }
+        details[open] summary::after { content: '−'; }
+        .details-content { padding-top: var(--spacing-sm); font-size: 0.9rem; color: #4a423b; }
+
+        /* --- COMMERCE (CART SLIDE-OUT) --- */
+        .cart-overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(28, 24, 20, 0.4); backdrop-filter: blur(4px);
+            z-index: 999; opacity: 0; visibility: hidden; transition: 0.3s;
+        }
+        .cart-overlay.active { opacity: 1; visibility: visible; }
+        
+        .cart-panel {
+            position: fixed; top: 0; right: -100%; width: 100%; max-width: 400px; height: 100%;
+            background: var(--cream); z-index: 1000;
+            transition: right 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            display: flex; flex-direction: column;
+            box-shadow: -10px 0 30px rgba(0,0,0,0.1);
+        }
+        .cart-panel.active { right: 0; }
+        
+        .cart-header {
+            padding: var(--spacing-sm) var(--spacing-md);
+            border-bottom: 1px solid var(--border-faint);
+            display: flex; justify-content: space-between; align-items: center;
+        }
+        .close-cart { background: none; border: none; font-size: 2rem; color: var(--espresso); line-height: 1; }
+        
+        .cart-shipping-bar {
+            padding: var(--spacing-sm) var(--spacing-md); background: rgba(184, 146, 74, 0.05);
+            text-align: center; font-size: 0.8rem; border-bottom: 1px solid var(--border-faint);
+        }
+        .progress-track { width: 100%; height: 4px; background: #e0d8cc; margin-top: 0.5rem; border-radius: 2px; overflow: hidden;}
+        .progress-fill { height: 100%; background: var(--gold); width: 0%; transition: width 0.3s; }
+
+        .cart-items { flex: 1; overflow-y: auto; padding: var(--spacing-md); }
+        .cart-footer { padding: var(--spacing-md); border-top: 1px solid var(--border-faint); }
+        .cart-total { display: flex; justify-content: space-between; font-family: var(--font-serif); font-size: 1.5rem; margin-bottom: var(--spacing-sm); }
+        
+        .cart-item-row { display: flex; gap: 1rem; margin-bottom: 1rem; }
+        .cart-item-img { width: 70px; height: 90px; background: #eee; }
+        .cart-item-details h4 { font-size: 1rem; font-family: var(--font-sans); }
+
+        /* Helpers */
+        .text-center { text-align: center; }
+        .mt-2 { margin-top: var(--spacing-md); }
+    </style>
+</head>
+<body>
+
+    <!-- HEADER -->
+    <header>
+        <div class="container nav-inner">
+            <nav class="nav-links small-caps">
+                <a onclick="switchView('home')">Shop</a>
+                <a href="#story">Our Story</a>
+            </nav>
+            <a onclick="switchView('home')" class="logo">
+                APNE
+                <span class="logo-sub">अपने</span>
+            </a>
+            <div class="nav-actions small-caps">
+                <span class="lang-toggle">EN / FR</span>
+                <a class="cart-toggle" onclick="toggleCart()">Cart <span class="cart-count" id="cart-counter">0</span></a>
+            </div>
+        </div>
+    </header>
+
+    <!-- MAIN VIEWS CONTAINER -->
+    <main>
+        
+        <!-- ================= HOME VIEW ================= -->
+        <section id="home-view" class="view active">
+            
+            <!-- Hero -->
+            <div class="hero reveal">
+                <!-- Inline SVG for aesthetic backdrop -->
+                <svg class="hero-img" viewBox="0 0 100 100" preserveAspectRatio="none">
+                    <rect width="100" height="100" fill="#f4ebd9" />
+                    <!-- Abstract fine gold hairline pattern -->
+                    <path d="M50 0 L50 100 M0 50 L100 50" stroke="#B8924A" stroke-width="0.1" stroke-dasharray="1 2"/>
+                </svg>
+                <div class="container hero-content">
+                    <span class="devanagari-accent">विरासत</span>
+                    <h1>Cultivating radiance, quietly.</h1>
+                    <p>Modern skincare rooted in South Asian heritage. Designed for melanin-rich skin, meticulously crafted in Canada.</p>
+                    <button class="btn" onclick="document.getElementById('shop-grid').scrollIntoView({behavior: 'smooth'})">Explore Collection</button>
+                </div>
+            </div>
+
+            <!-- Value Strip -->
+            <div class="value-strip small-caps reveal">
+                <span>Helps Brighten & Refine</span>
+                <span>Formulated for Melanin-Rich Skin</span>
+                <span>Crafted in Canada</span>
+            </div>
+
+            <!-- Shop Collection -->
+            <div id="shop-grid" class="shop-section container reveal">
+                <div class="section-header">
+                    <span class="devanagari-accent">संग्रह</span>
+                    <h2>Our Essentials</h2>
+                </div>
+                
+                <div class="product-grid">
+                    <!-- Product 1 -->
+                    <div class="product-card">
+                        <div class="product-card-img-wrapper" onclick="switchView('pdp')">
+                            <!-- Amber Glass Visual Placeholder via color/gradient -->
+                            <div style="position:absolute; inset:0; background: linear-gradient(135deg, #a66a2a 0%, #3e200c 100%); opacity: 0.15;"></div>
+                        </div>
+                        <div class="small-caps">Brightening Serum</div>
+                        <div class="product-meta">
+                            <h3>Vitamin C 20%</h3>
+                            <span class="price">$68 CAD</span>
+                        </div>
+                        <p style="font-size:0.9rem; margin-bottom:1rem; opacity:0.8;">Helps improve the look of dullness and uneven tone.</p>
+                        <button class="btn btn-outline" onclick="addToCart(68, 'Vitamin C 20% Serum')">Add to Cart</button>
+                    </div>
+
+                    <!-- Product 2 -->
+                    <div class="product-card">
+                        <div class="product-card-img-wrapper">
+                            <div style="position:absolute; inset:0; background: linear-gradient(135deg, #a66a2a 0%, #3e200c 100%); opacity: 0.15;"></div>
+                        </div>
+                        <div class="small-caps">Clarifying Wash</div>
+                        <div class="product-meta">
+                            <h3>Salicylic Acid 2%</h3>
+                            <span class="price">$42 CAD</span>
+                        </div>
+                        <p style="font-size:0.9rem; margin-bottom:1rem; opacity:0.8;">Deeply cleanses to refine the look of pores.</p>
+                        <button class="btn btn-outline" onclick="addToCart(42, 'Salicylic Acid 2% Wash')">Add to Cart</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Cultural Story Block -->
+            <div id="story" class="cultural-story reveal">
+                <div class="container story-grid">
+                    <div class="story-image">
+                        <!-- Abstract framing for image -->
+                    </div>
+                    <div class="story-content">
+                        <span class="devanagari-accent">अपने लोग</span>
+                        <h2>Our Own People.</h2>
+                        <p>Apne means "our own" in Hindi. We built this brand to honor the rituals passed down through generations of South Asian homes, without leaning on loud clichés. No marigolds, no turmeric stains—just clinical efficacy housed in vessels inspired by Mughal restraint and modern design.</p>
+                        <br>
+                        <a onclick="switchView('pdp')" class="btn btn-outline" style="border-color:var(--gold); color:var(--cream);">Discover the Formula</a>
+                    </div>
+                </div>
+            </div>
+            
+        </section>
+
+
+        <!-- ================= PRODUCT DETAIL VIEW ================= -->
+        <section id="pdp-view" class="view">
+            <div class="container pdp-grid">
+                
+                <!-- Gallery -->
+                <div class="pdp-gallery reveal">
+                    <div class="pdp-gallery-item" style="background: linear-gradient(135deg, #a66a2a 0%, #3e200c 100%);"></div>
+                    <div class="pdp-gallery-item"></div>
+                    <div class="pdp-gallery-item"></div>
+                    <div class="pdp-gallery-item"></div>
+                </div>
+
+                <!-- Info Panel -->
+                <div class="pdp-info reveal">
+                    <div class="pdp-header">
+                        <span class="devanagari-accent">तेज</span>
+                        <div class="small-caps">Brightening Serum</div>
+                        <h1>Vitamin C 20%</h1>
+                        <div class="price">$68 CAD</div>
+                    </div>
+                    
+                    <p>A potent, lightweight fluid that helps improve the look of uneven skin tone and dullness. Stabilized ascorbic acid is delivered in an amber glass vessel to preserve peak efficacy.</p>
+                    
+                    <div class="commerce-controls">
+                        <!-- Bundle Upsell -->
+                        <div class="bundle-box" onclick="this.classList.toggle('selected')">
+                            <div>
+                                <strong class="small-caps">The Apne Ritual Bundle</strong>
+                                <div style="font-size: 0.8rem;">Serum + Salicylic Wash</div>
+                            </div>
+                            <div>$100 CAD</div>
+                        </div>
+                        
+                        <button class="btn" onclick="addToCart(68, 'Vitamin C 20% Serum')">Add to Cart — $68</button>
+                        <p style="font-size: 0.75rem; text-align: center; opacity: 0.6;">Complimentary shipping on orders over $55 CAD.</p>
+                    </div>
+
+                    <!-- Accordions -->
+                    <details>
+                        <summary>Key Actives & Benefits</summary>
+                        <div class="details-content">
+                            <strong>20% L-Ascorbic Acid:</strong> Visibly brightens the look of skin.<br>
+                            <strong>Ferulic Acid:</strong> Enhances stability and antioxidant presence.<br>
+                            <em>Compliant note: Our formulas do not bleach or alter natural melanin, but rather encourage a uniform, radiant appearance.</em>
+                        </div>
+                    </details>
+                    <details>
+                        <summary>How to Use & Patch Test</summary>
+                        <div class="details-content">
+                            Apply 3-4 drops to clean, dry skin every morning. Follow with SPF.<br><br>
+                            <strong>Patch Test Guidance:</strong> Apply a small amount to the inner forearm. Wait 24 hours. If irritation occurs, rinse off and cease use.
+                        </div>
+                    </details>
+                    <details>
+                        <summary>Full Ingredients (INCI)</summary>
+                        <div class="details-content" style="font-size: 0.75rem;">
+                            Aqua (Water), Ascorbic Acid, Propanediol, Glycerin, Ferulic Acid, Sodium Hyaluronate, Phenoxyethanol, Ethylhexylglycerin.
+                        </div>
+                    </details>
+                    <details>
+                        <summary>Shipping & Returns</summary>
+                        <div class="details-content">
+                            Dispatched from Toronto within 48 hours. Returns accepted on unopened bottles within 14 days of delivery.
+                        </div>
+                    </details>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- ================= COMMERCE (CART) ================= -->
+    <div class="cart-overlay" id="cart-overlay" onclick="toggleCart()"></div>
+    <div class="cart-panel" id="cart-panel">
+        <div class="cart-header">
+            <h3 style="font-family: var(--font-sans); text-transform: uppercase; font-size: 1rem;">Your Cart</h3>
+            <button class="close-cart" onclick="toggleCart()">&times;</button>
+        </div>
+        
+        <div class="cart-shipping-bar">
+            <span id="shipping-msg">You are $55 away from Free Shipping</span>
+            <div class="progress-track">
+                <div class="progress-fill" id="shipping-progress"></div>
+            </div>
+        </div>
+
+        <div class="cart-items" id="cart-items">
+            <!-- Items injected by JS -->
+            <p style="text-align:center; margin-top:2rem; opacity:0.5;">Your cart is beautifully empty.</p>
+        </div>
+
+        <div class="cart-footer">
+            <div class="cart-total">
+                <span>Subtotal</span>
+                <span id="cart-total-price">$0</span>
+            </div>
+            <button class="btn" onclick="alert('Proceeding to secure checkout (Not implemented in demo)')">Checkout</button>
+        </div>
+    </div>
+
+    <!-- --- JAVASCRIPT --- -->
+    <script>
+        // --- View Switching Logic ---
+        function switchView(viewId) {
+            document.querySelectorAll('.view').forEach(view => view.classList.remove('active'));
+            document.getElementById(viewId + '-view').classList.add('active');
+            window.scrollTo(0, 0); // Reset scroll position
+            
+            // Re-trigger reveal animations
+            setTimeout(() => {
+                document.querySelectorAll('.reveal').forEach(el => {
+                    if(isElementInViewport(el)) el.classList.add('active');
+                });
+            }, 100);
+        }
+
+        // --- Scroll Reveal Animation Logic ---
+        function isElementInViewport(el) {
+            const rect = el.getBoundingClientRect();
+            return (rect.top <= (window.innerHeight || document.documentElement.clientHeight) * 0.85);
+        }
+        
+        function handleScroll() {
+            document.querySelectorAll('.reveal').forEach(el => {
+                if (isElementInViewport(el)) {
+                    el.classList.add('active');
+                }
+            });
+        }
+        
+        window.addEventListener('scroll', handleScroll);
+        window.addEventListener('load', handleScroll);
+
+        // --- Simple Cart Logic ---
+        let cart = [];
+        const FREE_SHIPPING_THRESHOLD = 55;
+
+        function toggleCart() {
+            document.getElementById('cart-panel').classList.toggle('active');
+            document.getElementById('cart-overlay').classList.toggle('active');
+            updateCartUI();
+        }
+
+        function addToCart(price, name) {
+            cart.push({ price, name });
+            document.getElementById('cart-counter').innerText = cart.length;
+            toggleCart(); // Open cart to show user
+        }
+
+        function updateCartUI() {
+            const itemsContainer = document.getElementById('cart-items');
+            const totalEl = document.getElementById('cart-total-price');
+            const shippingMsg = document.getElementById('shipping-msg');
+            const progressFill = document.getElementById('shipping-progress');
+
+            let total = 0;
+            itemsContainer.innerHTML = '';
+
+            if(cart.length === 0) {
+                itemsContainer.innerHTML = '<p style="text-align:center; margin-top:2rem; opacity:0.5;">Your cart is beautifully empty.</p>';
+            } else {
+                cart.forEach((item, index) => {
+                    total += item.price;
+                    itemsContainer.innerHTML += `
+                        <div class="cart-item-row">
+                            <div class="cart-item-img"></div>
+                            <div class="cart-item-details">
+                                <h4>${item.name}</h4>
+                                <div class="price">$${item.price} CAD</div>
+                            </div>
+                        </div>
+                    `;
+                });
+            }
+
+            totalEl.innerText = `$${total} CAD`;
+
+            // Free Shipping Logic
+            if (total >= FREE_SHIPPING_THRESHOLD) {
+                shippingMsg.innerText = "You have unlocked Complimentary Shipping.";
+                progressFill.style.width = '100%';
+                progressFill.style.background = '#4CAF50'; // subtle green indication
+            } else {
+                const remainder = FREE_SHIPPING_THRESHOLD - total;
+                shippingMsg.innerText = `You are $${remainder} CAD away from Free Shipping.`;
+                progressFill.style.width = `${(total / FREE_SHIPPING_THRESHOLD) * 100}%`;
+                progressFill.style.background = 'var(--gold)';
+            }
+        }
+    </script>
+</body>
+</html>
